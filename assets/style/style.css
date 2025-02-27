@@ -1,0 +1,21 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.screen {
+    
+    width: 100%;
+    min-height: 100vh;
+    background-color: #2C2E95;
+}
+
+.wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: left;
+    align-items: top;
+    padding: 30px;
+}
