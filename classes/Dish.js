@@ -2,6 +2,7 @@
 
 class Dish {
 
+    #id;
     #name;
     #price;
     #description;
@@ -12,7 +13,9 @@ class Dish {
 
     // konstruktorius
     constructor(name, price, category, description = 'Nera aprašymo'){
+        
         Dish.dishCounter++;
+        this.#id = Dish.dishCounter;
         this.#name = name;
         this.#price = price;
         this.#description = description;
@@ -37,6 +40,10 @@ class Dish {
 
     getCategory(){
         return this.#category.getCategoryName();
+    }
+
+    getId(){
+        return this.#id;
     }
 
     // Seteriai
