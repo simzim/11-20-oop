@@ -4,7 +4,7 @@ import Menu from './classes/Menu.js';
 
 const mainMenu = new Menu();
 
-// console.log(mainMenu);
+console.log(mainMenu);
 
 const dessert = new Category('Desertai', mainMenu);
 const kita = new Category('kita', mainMenu);
@@ -28,7 +28,40 @@ function displayCategoryList(){
     content.innerHTML = mainMenu.generateInnerHTML();
 }
 
+// __________________________________________________
+// _____HTML turinio kurimas -> prideti  kategorijas___
 
+const showCategoryForm = document.getElementById('showCategoryForm');
+
+showCategoryForm.addEventListener('click', ()=> displayCategoryForm());
+
+function displayCategoryForm(){
+    content.innerHTML = `
+        <h2>Pridėti naują Kategoriją</h2>
+        <form id="addCategoryForm" class="addForm">
+            <label for="categoryName">Pavadinimas:</label>
+            <input type="text" id="categoryName" required />
+
+            <button class="btn" type="submit">Išsaugoti</button>
+        </form>
+    `;
+
+    const categoryForm = document.getElementById('addCategoryForm');
+
+    categoryForm.addEventListener('submit', (e) => {
+        
+        e.preventDefault();
+
+        const categoryName = e.target.categoryName.value;
+
+        //console.log(categoryName);
+        const newCategory = new Category(categoryName, mainMenu);
+
+        console.log(`kategorijos objektas sukurtas ${newCategory.getCategoryName()}`)
+        console.log(mainMenu)
+        e.target.reset();
+    })
+}
 
 
 

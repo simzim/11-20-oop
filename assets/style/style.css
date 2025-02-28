@@ -49,3 +49,24 @@
     justify-content: center;
     align-items: center;
 }
+
+
+.addForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.addForm input {
+    margin-bottom: 10px;
+    height: 30px;
+    font-size: 18px;
+}
+
+.btn {
+    height: 50px;
+    font-family: "Poppins", 'serif';
+    font-size: 18px;
+    background-color: greenyellow;
+    cursor: pointer;
+}
