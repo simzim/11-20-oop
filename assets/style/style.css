@@ -57,9 +57,15 @@
     gap: 10px;
 }
 
-.addForm input {
+.addForm input, .addForm select{
     margin-bottom: 10px;
     height: 30px;
+    font-size: 18px;
+}
+
+
+.addForm textarea {
+    margin-bottom: 10px;
     font-size: 18px;
 }
 
