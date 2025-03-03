@@ -11,9 +11,9 @@ const kita = new Category('kita', mainMenu);
 const drinks = new Category('Gėrimai', mainMenu);
 // console.log(dessert);
 
-const kitoks = new Dish('lialia', 5.5, kita);
-const iceCream = new Dish('Ledai', 5.5, dessert);
-const cake = new Dish('Tortas', 5.5, dessert, 'pats skaniausias');
+const kitoks = new Dish('lialia', 5.5, 2, mainMenu);
+const iceCream = new Dish('Ledai', 5.5, 1, mainMenu);
+const cake = new Dish('Tortas', 5.5, 1, mainMenu, 'pats skaniausias');
 
 // __________________________________________________
 // _____HTML turinio kurimas -> rodyti kategorijas___
@@ -62,6 +62,75 @@ function displayCategoryForm(){
         e.target.reset();
     })
 }
+
+// __________________________________________________
+// _____HTML turinio kurimas -> prideti  patiekala___
+
+
+const showDishForm  = document.getElementById('showDishForm');
+
+showDishForm.addEventListener('click', ()=> displayDishForm());
+
+function displayDishForm(){
+    content.innerHTML = `
+        <h2>Pridėti naują Patiekalą</h2>
+        <form id="addDishForm" class="addForm">
+            <label for="dishName">Pavadinimas:</label>
+            <input type="text" id="dishName" required />
+
+            <label for="dishPrice">Kaina:</label>
+            <input type="text" id="dishPrice" required />
+
+            <label for="dishDescription">Aprašymas:</label>
+            <textarea name="description" id="dishDescription" rows="5" cols="30"></textarea>
+            
+            <label for="categorySelect">Pasirinkite kategoriją:</label>
+            <select id='categorySelect'>
+                <option value=''>Pasirinkite Kategoriją:</option>
+                ${mainMenu.getCategories().map((cat) => 
+                    `<option value='${cat.getId()}'>${cat.getCategoryName()}</option>`
+                )}
+            </select>
+            <button class="btn" type="submit">Išsaugoti</button>
+        </form>
+    `
+
+    const dishForm = document.getElementById('addDishForm');
+
+    dishForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const dishName = e.target.dishName.value;
+        const dishPrice = e.target.dishPrice.value;
+        const dishDescription = e.target.dishDescription.value;
+        const dishCategory = e.target.categorySelect.value;
+
+        // console.log(dishName)
+        // console.log(dishPrice)
+        // console.log(dishDescription)
+        // console.log(dishCategory)
+        
+        const newDish = new Dish(dishName, dishPrice, dishCategory, mainMenu, dishDescription);
+        
+        e.target.reset();
+
+
+    })
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 

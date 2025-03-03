@@ -12,16 +12,25 @@ class Dish {
     static dishCounter = 0;
 
     // konstruktorius
-    constructor(name, price, category, description = 'Nera aprašymo'){
+    constructor(name, price, categoryId, mm, description = 'Nera aprašymo'){
         
         Dish.dishCounter++;
         this.#id = Dish.dishCounter;
         this.#name = name;
         this.#price = price;
         this.#description = description;
-        this.#category = category;
-        category.addDish(this);
+        // this.#category = category;
+        // category.addDish(this);
         Dish.allDishes.push(this);
+
+        const category = mm.getCategories().find(cat => cat.getId() == categoryId);
+        if(category){
+            this.#category = category;
+            category.addDish(this);
+        } else {
+            throw new Error('Kategorija nerasta');
+        }
+
     }
 
     // Geteriai
