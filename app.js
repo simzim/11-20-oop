@@ -1,42 +1,50 @@
-import Dish from './classes/Dish.js';
-import Category from './classes/Category.js';
-import Menu from './classes/Menu.js';
+import Dish from "./classes/Dish.js";
+import Category from "./classes/Category.js";
+import Menu from "./classes/Menu.js";
 
 const mainMenu = new Menu();
 
-console.log(mainMenu);
+// Kategorijos
+const dessert = new Category("Desertai", mainMenu);
+const dinner = new Category("Karšti patiekalai", mainMenu);
+const drinks = new Category("Gėrimai", mainMenu);
+const breakfast = new Category("Pusričių meniu", mainMenu);
 
-const dessert = new Category('Desertai', mainMenu);
-const kita = new Category('kita', mainMenu);
-const drinks = new Category('Gėrimai', mainMenu);
-// console.log(dessert);
 
-const kitoks = new Dish('lialia', 5.5, 2, mainMenu);
-const iceCream = new Dish('Ledai', 5.5, 1, mainMenu);
-const cake = new Dish('Tortas', 5.5, 1, mainMenu, 'pats skaniausias');
+// Patiekalai
+const kitoks = new Dish("Cepelinai", 8.5, 2, mainMenu);
+const kep = new Dish("Kepsnys", 15.5, 2, mainMenu);
+const iceCream = new Dish("Ledai", 5.5, 1, mainMenu);
+const cake = new Dish("Tortas", 5.5, 1, mainMenu, "pats skaniausias");
+const cafe = new Dish("Kava", 3.5, 3, mainMenu, "Labai skani");
+const tea = new Dish("Arbata", 2.5, 3, mainMenu, "Vaisine");
+const oml = new Dish("Omletas", 4.5, 4, mainMenu);
+const kose = new Dish("Košė", 2.5, 3, mainMenu, "Avižinė");
+
+
 
 // __________________________________________________
 // _____HTML turinio kurimas -> rodyti kategorijas___
 
-const content = document.getElementById('content');
+const content = document.getElementById("content");
 
-const showCategoryList = document.getElementById('showCategoryList');
+const showCategoryList = document.getElementById("showCategoryList");
 
-showCategoryList.addEventListener('click', () => displayCategoryList());
+showCategoryList.addEventListener("click", () => displayCategoryList());
 
-function displayCategoryList(){
-    content.innerHTML = mainMenu.generateInnerHTML();
+function displayCategoryList() {
+  content.innerHTML = mainMenu.generateInnerHTML();
 }
 
 // __________________________________________________
 // _____HTML turinio kurimas -> prideti  kategorijas___
 
-const showCategoryForm = document.getElementById('showCategoryForm');
+const showCategoryForm = document.getElementById("showCategoryForm");
 
-showCategoryForm.addEventListener('click', ()=> displayCategoryForm());
+showCategoryForm.addEventListener("click", () => displayCategoryForm());
 
-function displayCategoryForm(){
-    content.innerHTML = `
+function displayCategoryForm() {
+  content.innerHTML = `
         <h2>Pridėti naują Kategoriją</h2>
         <form id="addCategoryForm" class="addForm">
             <label for="categoryName">Pavadinimas:</label>
@@ -46,33 +54,33 @@ function displayCategoryForm(){
         </form>
     `;
 
-    const categoryForm = document.getElementById('addCategoryForm');
+  const categoryForm = document.getElementById("addCategoryForm");
 
-    categoryForm.addEventListener('submit', (e) => {
-        
-        e.preventDefault();
+  categoryForm.addEventListener("submit", (e) => {
+    e.preventDefault();
 
-        const categoryName = e.target.categoryName.value;
+    const categoryName = e.target.categoryName.value;
 
-        //console.log(categoryName);
-        const newCategory = new Category(categoryName, mainMenu);
+    //console.log(categoryName);
+    const newCategory = new Category(categoryName, mainMenu);
 
-        console.log(`kategorijos objektas sukurtas ${newCategory.getCategoryName()}`)
-        console.log(mainMenu)
-        e.target.reset();
-    })
+    console.log(
+      `kategorijos objektas sukurtas ${newCategory.getCategoryName()}`
+    );
+    console.log(mainMenu);
+    e.target.reset();
+  });
 }
 
 // __________________________________________________
 // _____HTML turinio kurimas -> prideti  patiekala___
 
+const showDishForm = document.getElementById("showDishForm");
 
-const showDishForm  = document.getElementById('showDishForm');
+showDishForm.addEventListener("click", () => displayDishForm());
 
-showDishForm.addEventListener('click', ()=> displayDishForm());
-
-function displayDishForm(){
-    content.innerHTML = `
+function displayDishForm() {
+  content.innerHTML = `
         <h2>Pridėti naują Patiekalą</h2>
         <form id="addDishForm" class="addForm">
             <label for="dishName">Pavadinimas:</label>
@@ -87,60 +95,49 @@ function displayDishForm(){
             <label for="categorySelect">Pasirinkite kategoriją:</label>
             <select id='categorySelect'>
                 <option value=''>Pasirinkite Kategoriją:</option>
-                ${mainMenu.getCategories().map((cat) => 
-                    `<option value='${cat.getId()}'>${cat.getCategoryName()}</option>`
-                )}
+                ${mainMenu
+                  .getCategories()
+                  .map(
+                    (cat) =>
+                      `<option value='${cat.getId()}'>${cat.getCategoryName()}</option>`
+                  )}
             </select>
             <button class="btn" type="submit">Išsaugoti</button>
         </form>
-    `
+    `;
+  const dishForm = document.getElementById("addDishForm");
 
-    const dishForm = document.getElementById('addDishForm');
+  dishForm.addEventListener("submit", (e) => {
+    e.preventDefault();
 
-    dishForm.addEventListener('submit', (e) => {
-        e.preventDefault();
+    const dishName = e.target.dishName.value;
+    const dishPrice = e.target.dishPrice.value;
+    const dishDescription = e.target.dishDescription.value;
+    const dishCategory = e.target.categorySelect.value;
 
-        const dishName = e.target.dishName.value;
-        const dishPrice = e.target.dishPrice.value;
-        const dishDescription = e.target.dishDescription.value;
-        const dishCategory = e.target.categorySelect.value;
-
-        // console.log(dishName)
-        // console.log(dishPrice)
-        // console.log(dishDescription)
-        // console.log(dishCategory)
-        
-        const newDish = new Dish(dishName, dishPrice, dishCategory, mainMenu, dishDescription);
-        
-        e.target.reset();
-
-
-    })
+    const newDish = new Dish(
+      dishName,
+      dishPrice,
+      dishCategory,
+      mainMenu,
+      dishDescription
+    );
+    e.target.reset();
+  });
+}
 
 
+// __________________________________________________
+// _____HTML turinio kurimas -> rodyti patiekalu sarasa___
 
+const showDishList = document.getElementById("showDishList");
+
+showDishList.addEventListener("click", () => displayDishList());
+
+function displayDishList() {
+  content.innerHTML = mainMenu.generateDishInnerHTML();
 }
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-// console.log(kita);
-// console.log(dessert);
-// console.log(`Viso sukurta ${Dish.dishCounter}`);
-// console.log(`Viso prideta patiekalu i kategorijas ${Category.dishCounter}`);
-
-// console.log(iceCream.dishCounter);
-
-
-// console.log(iceCream.getInfo());
