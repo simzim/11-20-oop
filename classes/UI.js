@@ -34,6 +34,7 @@ class UI{
       
           if(category){
             category.setCategoryName(categoryName);
+            UI.displayCategoryList(menu, contentElement );
 
           }else {
             const newCategory = new Category(categoryName, menu);
@@ -67,12 +68,49 @@ class UI{
             `<tr>
                 <td>${++counter}</td>
                 <td>${cat.getCategoryName()}</td>
-                <td> mygtukai </td>
+                <td> 
+                  <button data-category-id ='${cat.getId()}'  class="action-btn edit-button" >
+                    <img src='../assets/img/edit.png' width='25'>
+                  </button>
+
+                  <button data-category-id ='${cat.getId()}'  class="action-btn delete-button" >
+                    <img src='../assets/img/delete.png' width='25'>
+                  </button>                
+                </td>
             </tr>`
         })
 
         htmlContent += `</table>`;
         contentElement.innerHTML = htmlContent;
+
+        const editButtons = contentElement.querySelectorAll('.edit-button');
+        editButtons.forEach(button => {
+          button.addEventListener('click', (e) => {
+            const categoryId = e.target.closest('button').dataset.categoryId;
+
+            const category = menu.editCategory(categoryId);
+            if(category){
+              UI.displayCategoryForm(menu, contentElement, category);
+            }
+         });
+         });
+
+        const deleteButtons = contentElement.querySelectorAll('.delete-button');
+        deleteButtons.forEach(button => {
+          button.addEventListener('click', (e) => {
+            const categoryId = e.target.closest('button').dataset.categoryId;
+
+            if(confirm('Ar tikrai norite ištrinti kategoriją?')){
+              // menu.removeCategory(categoryId);
+              UI.displayCategoryList(menu, contentElement);
+            }
+
+            UI.displayCategoryList(menu, contentElement);
+
+          });
+        });
+
+
 
     }
 

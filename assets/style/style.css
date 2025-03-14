@@ -92,3 +92,10 @@ table {
   /* tr:nth-child(even) {
     background-color: #dddddd;
   } */
+
+  .action-btn {
+    background: none;
+    margin: 5px 10px;
+    cursor: pointer;
+    border: none;
+  }

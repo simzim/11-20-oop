@@ -16,6 +16,13 @@ class Menu {
     }
 
  
+    editCategory(categoryId){
+        const category = this.#categories.find(cat => cat.getId() === parseInt(categoryId));
+        return category;
+    }
+
+
+
 
     generateDishInnerHTML(){
         let htmlContent = `<table>`
