@@ -1,5 +1,4 @@
 
-
 class Dish {
 
     #id;
@@ -8,29 +7,17 @@ class Dish {
     #description;
     #category;
 
-    static allDishes = []
     static dishCounter = 0;
 
     // konstruktorius
-    constructor(name, price, categoryId, mm, description = 'Nera aprašymo'){
+    constructor(name, price, description = 'Nera aprašymo'){
         
         Dish.dishCounter++;
         this.#id = Dish.dishCounter;
         this.#name = name;
         this.#price = price;
         this.#description = description;
-        // this.#category = category;
-        // category.addDish(this);
-        Dish.allDishes.push(this);
-
-        const category = mm.getCategories().find(cat => cat.getId() == categoryId);
-        if(category){
-            this.#category = category;
-            category.addDish(this);
-        } else {
-            throw new Error('Kategorija nerasta');
-        }
-
+        this.#category = null;
     }
 
     // Geteriai
@@ -48,7 +35,7 @@ class Dish {
     }
 
     getCategory(){
-        return this.#category.getCategoryName();
+        return this.#category ? this.getCategoryName() : 'Nėra kategorijos';
     }
 
     getId(){
@@ -74,8 +61,8 @@ class Dish {
         this.#description = newDescription;
     }
 
-    setCategory(newCategory){
-        this.#category.setCategoryName(newCategory);
+    setCategory(category){
+        this.#category = category;
     }
 
     getInfo(){
@@ -90,8 +77,6 @@ class Dish {
         const total = allDishes.reduce((sum, dish) => sum + dish.getPrice(), 0)
         return total / allDishes.length;
     }
-
-
 }
 
 export default Dish;

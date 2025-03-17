@@ -6,21 +6,21 @@ import UI from "./classes/UI.js";
 const mainMenu = new Menu();
 
 // Kategorijos
-const dessert = new Category("Desertai", mainMenu);
-const dinner = new Category("Karšti patiekalai", mainMenu);
-const drinks = new Category("Gėrimai", mainMenu);
-const breakfast = new Category("Pusričių meniu", mainMenu);
+mainMenu.addCategory("Desertai");
+mainMenu.addCategory("Karšti patiekalai");
+mainMenu.addCategory("Gėrimai");
+mainMenu.addCategory("Pusričių meniu");
 
 
 // Patiekalai
-const kitoks = new Dish("Cepelinai", 8.5, 2, mainMenu);
-const kep = new Dish("Kepsnys", 15.5, 2, mainMenu);
-const iceCream = new Dish("Ledai", 5.5, 1, mainMenu);
-const cake = new Dish("Tortas", 5.5, 1, mainMenu, "pats skaniausias");
-const cafe = new Dish("Kava", 3.5, 3, mainMenu, "Labai skani");
-const tea = new Dish("Arbata", 2.5, 3, mainMenu, "Vaisine");
-const oml = new Dish("Omletas", 4.5, 4, mainMenu);
-const kose = new Dish("Košė", 2.5, 3, mainMenu, "Avižinė");
+mainMenu.addDish("Cepelinai", 8.5, 2, mainMenu);
+mainMenu.addDish("Kepsnys", 15.5, 2, mainMenu);
+mainMenu.addDish("Ledai", 5.5, 1, mainMenu);
+mainMenu.addDish("Tortas", 5.5, 1, mainMenu, "pats skaniausias");
+mainMenu.addDish("Kava", 3.5, 3, mainMenu, "Labai skani");
+mainMenu.addDish("Arbata", 2.5, 3, mainMenu, "Vaisine");
+mainMenu.addDish("Omletas", 4.5, 4, mainMenu);
+mainMenu.addDish("Košė", 2.5, 3, mainMenu, "Avižinė");
 
 
 // __________________________________________________
@@ -35,16 +35,6 @@ showCategoryForm.addEventListener("click", () => UI.displayCategoryForm(mainMenu
 const showCategoryList = document.getElementById("showCategoryList");
 showCategoryList.addEventListener("click", () => UI.displayCategoryList(mainMenu, content));
 
-
-
-// __________________________________________________
-// _____HTML turinio kurimas -> rodyti kategorijas___
-
-
-
-// function displayCategoryList() {
-//   content.innerHTML = mainMenu.generateInnerHTML();
-// }
 
 // __________________________________________________
 // _____HTML turinio kurimas -> prideti  patiekala___

@@ -1,18 +1,24 @@
+import Dish from "./Dish.js";
+import Category from "./Category.js";
 
 class Menu {
 
     #categories = [];
+    allDishes = [];
 
     constructor(){
         this.#categories = [];
+        this.allDishes = [];
     }
 
     getCategories(){
         return this.#categories;
     }
 
-    addCategory(category){
+    addCategory(name){
+        const category = new Category(name)
         this.#categories.push(category);
+        return category;
     }
 
  
@@ -21,9 +27,31 @@ class Menu {
         return category;
     }
 
+    removeCategory(categoryId){
+
+        const categoryIndex = this.getCategories().findIndex(cat => cat.getId() === parseInt(categoryId));
+        if (categoryIndex === -1) throw new Error('Kategorija nerasta');
+        const category = this.#categories[categoryIndex];
+
+        category.getDishesList().forEach(dish => {
+            console.log(dish);
+            dish.setCategory(null);
+        });
+
+        this.getCategories().splice(categoryIndex, 1);
+    }
+
+    addDish(name, price, categoryId, description){
+        const category = this.getCategories().find(cat => cat.getId() === parseInt(categoryId))
+
+        const dish = new Dish(name, price, description);
+        category.addDish(dish);
+        this.allDishes.push(dish);
+        return dish;
+    }
 
 
-
+// Kraustisim i UI klase
     generateDishInnerHTML(){
         let htmlContent = `<table>`
 

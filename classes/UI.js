@@ -39,13 +39,7 @@ class UI{
           }else {
             const newCategory = new Category(categoryName, menu);
           }
-          //console.log(categoryName);
-         
-      
-        //   console.log(
-        //     `kategorijos objektas sukurtas ${newCategory.getCategoryName()}`
-        //   );
-        //   console.log(mainMenu);
+   
           e.target.reset();
         });
       }
@@ -101,7 +95,9 @@ class UI{
             const categoryId = e.target.closest('button').dataset.categoryId;
 
             if(confirm('Ar tikrai norite ištrinti kategoriją?')){
-              // menu.removeCategory(categoryId);
+              console.log(categoryId);
+              menu.removeCategory(categoryId);
+
               UI.displayCategoryList(menu, contentElement);
             }
 
