@@ -89,6 +89,10 @@ table {
     padding: 8px;
   }
   
+  th {
+    background-color: rgba(0, 0, 0, 0.412);
+  }
+
   /* tr:nth-child(even) {
     background-color: #dddddd;
   } */

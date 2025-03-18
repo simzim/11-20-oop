@@ -37,7 +37,8 @@ class UI{
             UI.displayCategoryList(menu, contentElement );
 
           }else {
-            const newCategory = new Category(categoryName, menu);
+            menu.addCategory(categoryName);
+            // const newCategory = new Category(categoryName, menu);
           }
    
           e.target.reset();
@@ -105,10 +106,113 @@ class UI{
 
           });
         });
-
-
-
     }
+
+    // Patiekalu lenteles rodymas
+  static displayDishList(menu, contentElement){
+    let htmlContent = `<table>`
+
+    menu.getCategories().forEach(cat =>{
+        htmlContent += `
+            <tr>
+                <th>Kategorija</th>
+                <th colspan='2'>${cat.getCategoryName()}</th>
+            </tr>
+        `;
+        cat.getDishesList().forEach(dish => {
+            htmlContent += `
+                <tr>
+                    <td>${dish.getName()}</td>
+                    <td>${dish.getPrice()} Eur</td>
+                    <td>${dish.getDescription()}</td>
+                </tr>
+            `});
+    });
+
+    const uncategorizedDishes = menu.getAllDishes().filter(dish => dish.getCategory() === 'Nėra kategorijos')
+    console.log(uncategorizedDishes);
+
+    if (uncategorizedDishes.length > 0){
+      htmlContent += `
+      <tr>
+          <th>Kategorija</th>
+          <th colspan='2'>Be Kategorijos</th>
+      </tr>
+    `;
+    uncategorizedDishes.forEach(dish => {
+      htmlContent += `
+          <tr>
+              <td>${dish.getName()}</td>
+              <td>${dish.getPrice()} Eur</td>
+              <td>${dish.getDescription()}</td>
+          </tr>
+      `});
+
+
+    } else {
+      htmlContent += `
+      <tr>
+          <td colspan='3'>Patekalų be kategorijos nėra</td>
+      </tr>
+      `
+    }
+
+
+    htmlContent += `</table>`
+   contentElement.innerHTML = htmlContent;
+}
+
+static displayDishForm(menu, contentElement) {
+  contentElement.innerHTML = `
+        <h2>Pridėti naują Patiekalą</h2>
+        <form id="dishForm" class="addForm">
+            <label for="dishName">Pavadinimas:</label>
+            <input type="text" id="dishName" required />
+
+            <label for="dishPrice">Kaina:</label>
+            <input type="text" id="dishPrice" required />
+
+            <label for="dishDescription">Aprašymas:</label>
+            <textarea name="description" id="dishDescription" rows="5" cols="30"></textarea>
+            
+            <label for="categorySelect">Pasirinkite kategoriją:</label>
+            <select id='categorySelect'>
+                <option value=''>Pasirinkite Kategoriją:</option>
+                ${menu
+                  .getCategories()
+                  .map(
+                    (cat) =>
+                      `<option value='${cat.getId()}'>${cat.getCategoryName()}</option>`
+                  )}
+            </select>
+            <button class="btn" type="submit">Išsaugoti</button>
+        </form>
+    `;
+  const dishForm = document.getElementById("dishForm");
+
+  dishForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const dishName = e.target.dishName.value;
+    const dishPrice = e.target.dishPrice.value;
+    const dishDescription = e.target.dishDescription.value;
+    const dishCategoryId = e.target.categorySelect.value;
+
+    menu.addDish(dishName, dishPrice, dishCategoryId, dishDescription);
+
+    // const newDish = new Dish(
+    //   dishName,
+    //   dishPrice,
+    //   dishCategory,
+    //   mainMenu,
+    //   dishDescription
+    // );
+    e.target.reset();
+  });
+}
+
+
+
 
 }
 export default UI;

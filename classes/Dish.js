@@ -35,7 +35,7 @@ class Dish {
     }
 
     getCategory(){
-        return this.#category ? this.getCategoryName() : 'Nėra kategorijos';
+        return this.#category ? this.#category.getCategoryName() : 'Nėra kategorijos';
     }
 
     getId(){
