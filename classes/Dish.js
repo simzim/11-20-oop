@@ -34,6 +34,10 @@ class Dish {
         return this.#description;
     }
 
+    getCategoryObj(){
+        return this.#category ? this.#category : null;
+    }
+
     getCategory(){
         return this.#category ? this.#category.getCategoryName() : 'Nėra kategorijos';
     }

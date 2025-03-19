@@ -32,8 +32,16 @@ class Category {
     }
 
     addDish(dish){
-        this.#dishesList.push(dish);
-        Category.dishCounter++;
+
+        const exists = this.#dishesList.some(existingDish => existingDish.getId() === dish.getId());
+
+        if(!exists){
+            this.#dishesList.push(dish);
+        }
+    }
+
+    removeDish(dish){
+        this.#dishesList = this.#dishesList.filter(d => d.getId() !== dish.getId())
     }
 }
 export default Category;

@@ -1,7 +1,9 @@
 import Category from "./Category.js";
 class UI{
 
+// -----------------------------------------------
 // KATEGORIJOS PRIDEJIMAS / REDAGAVIMAS
+// -----------------------------------------------
   static displayCategoryForm(menu, contentElement, category = null) {
     let categoryName = '';
     let title = '';
@@ -35,17 +37,16 @@ class UI{
           if(category){
             category.setCategoryName(categoryName);
             UI.displayCategoryList(menu, contentElement );
-
           }else {
             menu.addCategory(categoryName);
-            // const newCategory = new Category(categoryName, menu);
           }
-   
           e.target.reset();
         });
       }
 
+      // -----------------------------------------------
       // KATEGORIJU RODYMAS
+      // -----------------------------------------------
 
       static displayCategoryList(menu, contentElement ){
 
@@ -108,7 +109,9 @@ class UI{
         });
     }
 
-    // Patiekalu lenteles rodymas
+    // -----------------------------------------------
+    // PETIEKALU LENTELES RODYMAS
+    // -----------------------------------------------
   static displayDishList(menu, contentElement){
     let htmlContent = `<table>`
 
@@ -116,15 +119,24 @@ class UI{
         htmlContent += `
             <tr>
                 <th>Kategorija</th>
-                <th colspan='2'>${cat.getCategoryName()}</th>
+                <th colspan='3'>${cat.getCategoryName()}</th>
             </tr>
         `;
         cat.getDishesList().forEach(dish => {
             htmlContent += `
                 <tr>
-                    <td>${dish.getName()}</td>
-                    <td>${dish.getPrice()} Eur</td>
-                    <td>${dish.getDescription()}</td>
+                  <td>${dish.getName()}</td>
+                  <td>${dish.getPrice()} Eur</td>
+                  <td>${dish.getDescription()}</td>
+                  <td> 
+                    <button data-dish-id ='${dish.getId()}'  class="action-btn edit-button" >
+                      <img src='../assets/img/edit.png' width='25'>
+                    </button>
+
+                    <button data-dish-id ='${dish.getId()}'  class="action-btn delete-button" >
+                      <img src='../assets/img/delete.png' width='25'>
+                    </button>                
+                  </td>
                 </tr>
             `});
     });
@@ -136,7 +148,7 @@ class UI{
       htmlContent += `
       <tr>
           <th>Kategorija</th>
-          <th colspan='2'>Be Kategorijos</th>
+          <th colspan='3'>Be Kategorijos</th>
       </tr>
     `;
     uncategorizedDishes.forEach(dish => {
@@ -145,45 +157,95 @@ class UI{
               <td>${dish.getName()}</td>
               <td>${dish.getPrice()} Eur</td>
               <td>${dish.getDescription()}</td>
+              <td> 
+                <button data-dish-id ='${dish.getId()}'  class="action-btn edit-button" >
+                  <img src='../assets/img/edit.png' width='25'>
+                </button>
+
+                <button data-dish-id ='${dish.getId()}'  class="action-btn delete-button" >
+                  <img src='../assets/img/delete.png' width='25'>
+                </button>                
+              </td>
           </tr>
       `});
-
-
     } else {
       htmlContent += `
       <tr>
-          <td colspan='3'>Patekalų be kategorijos nėra</td>
+          <td colspan='4'>Patekalų be kategorijos nėra</td>
       </tr>
       `
     }
-
-
     htmlContent += `</table>`
    contentElement.innerHTML = htmlContent;
+
+   const editButtons = contentElement.querySelectorAll('.edit-button');
+   editButtons.forEach(button => {
+     button.addEventListener('click', (e) => {
+
+       const dishId = e.target.closest('button').dataset.dishId;
+        //console.log(dishId);
+   
+       if(dishId){
+         UI.displayDishForm(menu, contentElement, dishId);
+       }
+    });
+    });
+
+
 }
 
-static displayDishForm(menu, contentElement) {
+// -----------------------------------------------
+// PATIEKALŲ FORMOS RODYMAS
+// -----------------------------------------------
+
+static displayDishForm(menu, contentElement, dishId = null) {
+
+  const dish = menu.getAllDishes().find(dish => dish.getId() === parseInt(dishId));
+
+  console.log(dish);
+
+  let title = 'Pridėti naują Patiekalą';
+  let btnText = 'Išsaugoti Patiekalą';
+  let dishName = '';
+  let dishPrice = '';
+  let dishDescription = '';
+  let id = '';
+
+  if(dish){
+    title = 'Redaguoti Patiekalą';
+    btnText = 'Atnaujinti Patiekalą';
+    dishName = dish.getName();
+    dishPrice = dish.getPrice();
+    dishDescription = dish.getDescription();
+    id = dish.getId();
+  } 
+
   contentElement.innerHTML = `
-        <h2>Pridėti naują Patiekalą</h2>
+        <h2>${title}</h2>
         <form id="dishForm" class="addForm">
             <label for="dishName">Pavadinimas:</label>
-            <input type="text" id="dishName" required />
+            <input type="text" id="dishName" required  value='${dishName}'/>
 
             <label for="dishPrice">Kaina:</label>
-            <input type="text" id="dishPrice" required />
+            <input type="text" id="dishPrice" required value='${dishPrice}'/>
 
             <label for="dishDescription">Aprašymas:</label>
-            <textarea name="description" id="dishDescription" rows="5" cols="30"></textarea>
+            <textarea name="description" id="dishDescription" rows="5" cols="30">${dishDescription}</textarea>
             
             <label for="categorySelect">Pasirinkite kategoriją:</label>
             <select id='categorySelect'>
-                <option value=''>Pasirinkite Kategoriją:</option>
-                ${menu
-                  .getCategories()
-                  .map(
-                    (cat) =>
-                      `<option value='${cat.getId()}'>${cat.getCategoryName()}</option>`
-                  )}
+                <option value='' ${id === '' ? 'selected' : ''}>Pasirinkite Kategoriją:</option>
+            ${ console.log('ku ku')}
+                ${(() =>{
+                  const dishCategoryId = (dish && dish.getCategoryObj() )? dish.getCategoryObj().getId() : null;
+                  console.log('bu bu')
+                  return menu
+                          .getCategories()
+                          .map(
+                            (cat) =>
+                            `<option value='${cat.getId()}' ${dishCategoryId === cat.getId() ? 'selected' : ''}>${cat.getCategoryName()}</option>`
+                    );
+                  })() }
             </select>
             <button class="btn" type="submit">Išsaugoti</button>
         </form>
@@ -192,21 +254,39 @@ static displayDishForm(menu, contentElement) {
 
   dishForm.addEventListener("submit", (e) => {
     e.preventDefault();
-
     const dishName = e.target.dishName.value;
     const dishPrice = e.target.dishPrice.value;
     const dishDescription = e.target.dishDescription.value;
     const dishCategoryId = e.target.categorySelect.value;
 
-    menu.addDish(dishName, dishPrice, dishCategoryId, dishDescription);
+    if(dish){
+      dish.setName(dishName);
+      dish.setPrice(dishPrice);
+      dish.setDescription(dishDescription);
 
-    // const newDish = new Dish(
-    //   dishName,
-    //   dishPrice,
-    //   dishCategory,
-    //   mainMenu,
-    //   dishDescription
-    // );
+      const oldCategory = dish.getCategoryObj();
+      
+      const newCategory = menu.editCategory(dishCategoryId);
+      
+      if (oldCategory && oldCategory.getId() !== newCategory.getId()){
+        oldCategory.removeDish(dish);
+        
+      }
+
+      newCategory.addDish(dish)
+      
+      dish.setCategory(newCategory);
+      UI.displayDishList(menu, contentElement);
+
+
+    } else {
+      menu.addDish(dishName, dishPrice, dishCategoryId, dishDescription);
+    }
+
+
+
+    
+    
     e.target.reset();
   });
 }
