@@ -43,6 +43,23 @@ class Menu {
         this.getCategories().splice(categoryIndex, 1);
     }
 
+    removeDish(dishId){
+        const dishIndex = this.getAllDishes().findIndex(dish => dish.getId() === parseInt(dishId));
+        if (dishIndex === -1) throw new Error('Kategorija nerasta');
+        const dish = this.allDishes[dishIndex];
+        console.log(dish);
+
+        const category = dish.getCategoryObj()
+        if (category){
+            category.removeDish(dish);
+        }
+
+        this.getAllDishes().splice(dishIndex, 1);
+        
+    }
+
+
+
     addDish(name, price, categoryId, description){
         const category = this.getCategories().find(cat => cat.getId() === parseInt(categoryId))
 

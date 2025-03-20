@@ -4,6 +4,16 @@ class UI{
 // -----------------------------------------------
 // KATEGORIJOS PRIDEJIMAS / REDAGAVIMAS
 // -----------------------------------------------
+
+/**
+ * Atvaizduoja puslapyje Kategorijų kurimo arba redagavimo formą
+ * 
+ * @static
+ * @param {object} menu 
+ * @param {dom object} contentElement 
+ * @param {object} category 
+ */
+
   static displayCategoryForm(menu, contentElement, category = null) {
     let categoryName = '';
     let title = '';
@@ -47,6 +57,11 @@ class UI{
       // -----------------------------------------------
       // KATEGORIJU RODYMAS
       // -----------------------------------------------
+/**
+ * 
+ * @param {*} menu 
+ * @param {*} contentElement 
+ */
 
       static displayCategoryList(menu, contentElement ){
 
@@ -107,7 +122,7 @@ class UI{
 
           });
         });
-    }
+  }
 
     // -----------------------------------------------
     // PETIEKALU LENTELES RODYMAS
@@ -183,14 +198,27 @@ class UI{
      button.addEventListener('click', (e) => {
 
        const dishId = e.target.closest('button').dataset.dishId;
-        //console.log(dishId);
    
        if(dishId){
          UI.displayDishForm(menu, contentElement, dishId);
        }
     });
-    });
+  });
 
+  const deleteButtons = contentElement.querySelectorAll('.delete-button');
+  deleteButtons.forEach(button => {
+    button.addEventListener('click', (e) => {
+      const dishId = e.target.closest('button').dataset.dishId;
+
+      if(confirm('Ar tikrai norite ištrinti patiekalą?')){
+        console.log(dishId);
+        menu.removeDish(dishId);
+        UI.displayDishList(menu, contentElement);
+      }
+      UI.displayDishList(menu, contentElement);
+
+    });
+  });
 
 }
 
@@ -270,29 +298,18 @@ static displayDishForm(menu, contentElement, dishId = null) {
       
       if (oldCategory && oldCategory.getId() !== newCategory.getId()){
         oldCategory.removeDish(dish);
-        
       }
 
       newCategory.addDish(dish)
       
       dish.setCategory(newCategory);
       UI.displayDishList(menu, contentElement);
-
-
     } else {
       menu.addDish(dishName, dishPrice, dishCategoryId, dishDescription);
     }
-
-
-
-    
-    
     e.target.reset();
   });
 }
-
-
-
 
 }
 export default UI;
